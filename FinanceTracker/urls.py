@@ -16,9 +16,13 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 
-from .views import IndexView
+from mod_api import urls as mod_api_urls
+
+from . import views
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^', IndexView.as_view()),
+    url(r'^$', views.IndexView.as_view(), name='index'),
+    url(r'^api/', include(mod_api_urls)),
+    url(r'^company_search/', views.CompanySearchView.as_view(), name='company_search')
 ]

@@ -1,0 +1,23 @@
+.page-header--1 {
+    font-size: 2em;
+}
+.search-results-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+.result-item-card {
+    margin: 16px 32px;
+    min-height: 170px;
+}
+.mdl-card__title {
+    color: white;
+}
+.mdl-card__title-text {
+    width: 100%;
+}
+.result-item__exchange {
+    display: block;
+    clear: both;
+    color: #c9c9c9;
+    font-size: .8em;
+}

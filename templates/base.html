@@ -8,7 +8,9 @@
 
     <link rel="stylesheet" href={% static 'css/material.min.css' %}>
     <script src={% static 'js/material.min.js' %}></script>
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href={% static 'css/finance_styles.css' %}>
 
     {% block head_styles %}
     {% endblock %}
@@ -19,6 +21,7 @@
             mdl-layout--fixed-header">
         <header class="mdl-layout__header">
             <div class="mdl-layout__header-row">
+                <h5>{% block topbar_title %}Home{% endblock topbar_title %}</h5>
                 <div class="mdl-layout-spacer"></div>
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable
                       mdl-textfield--floating-label mdl-textfield--align-right">
@@ -28,7 +31,7 @@
                     </label>
 
                     <div class="mdl-textfield__expandable-holder">
-                        <input class="mdl-textfield__input" type="text" name="sample"
+                        <input class="mdl-textfield__input" type="text" name="search"
                                id="fixed-header-drawer-exp"/>
                     </div>
                 </div>
@@ -38,7 +41,8 @@
             <span class="mdl-layout-title">{% block sidebar_title %}Finance Tracker{% endblock %}</span>
             <nav class="mdl-navigation">
                 {% block sidebar_links %}
-                    <a class="mdl-navigation__link" href="">Link</a>
+                    <a class="mdl-navigation__link" href="{% url 'index' %}">Home</a>
+                    <a class="mdl-navigation__link" href="{% url 'company_search' %}">Find Company</a>
                 {% endblock sidebar_links %}
             </nav>
         </div>
