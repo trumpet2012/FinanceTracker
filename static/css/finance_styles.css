@@ -18,6 +18,9 @@
 .result-item__exchange {
     display: block;
     clear: both;
-    color: #c9c9c9;
+    color: #efefef;
     font-size: .8em;
+}
+.finance-container {
+    padding: 16px 32px;
 }

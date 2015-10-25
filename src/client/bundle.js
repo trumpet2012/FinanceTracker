@@ -18943,46 +18943,36 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var cx = require('classnames');
 
-var SearchResult = React.createClass({
-    displayName: 'SearchResult',
+var MdlCard = React.createClass({
+    displayName: 'MdlCard',
 
     render: function render() {
-        var exchange_name = this.props.exchange;
-        var exchange_colors = {
-            "NASDAQ": "mdl-color--blue-700",
-            "Market Data Express": "mdl-color--green-400",
-            "NYSE": "mdl-color--red-400",
-            "BATS\ Trading\ Inc": "mdl-color--teal-400"
-        };
-
-        // Convert the exchange name into a valid class name
-        var exch_class = exchange_name in exchange_colors ? exchange_colors[exchange_name] : 'mdl-color--blue-grey-300';
-
+        var header_class = this.props.headerClass;
         // Dictionary of classes that will be added to the title div of the card
-        var exch_class_dict = {
+        var header_class_dict = {
             'result-item': true,
             'result-item__symbol': true,
             'mdl-card__title': true,
             'mdl-card--expanded': true
         };
-        exch_class_dict[exch_class] = true;
+        header_class_dict[header_class] = true;
+        var header_classes = cx(header_class_dict);
 
-        var exchange_classes = cx(exch_class_dict);
         return React.createElement(
             'div',
             { className: 'result-item-card mdl-card mdl-shadow--2dp' },
             React.createElement(
                 'div',
-                { className: exchange_classes },
+                { className: header_classes },
                 React.createElement(
                     'h4',
                     { className: 'mdl-card__title-text' },
-                    this.props.symbol
+                    this.props.mainHeader
                 ),
                 React.createElement(
                     'div',
                     { className: 'result-item__exchange' },
-                    this.props.exchange
+                    this.props.subHeader
                 )
             ),
             React.createElement(
@@ -18991,7 +18981,7 @@ var SearchResult = React.createClass({
                 React.createElement(
                     'div',
                     { className: 'result-item result-item__name' },
-                    this.props.name
+                    this.props.text
                 )
             ),
             React.createElement(
@@ -18999,11 +18989,35 @@ var SearchResult = React.createClass({
                 { className: ' mdl-card__actions mdl-card--border' },
                 React.createElement(
                     'a',
-                    { href: '#', className: 'mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect' },
-                    'View more details'
+                    { href: this.props.linkUrl, className: 'mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect' },
+                    this.props.linkText
                 )
             )
         );
+    }
+});
+
+var SearchResult = React.createClass({
+    displayName: 'SearchResult',
+
+    render: function render() {
+        var exchange_name = this.props.exchange;
+        var exchange_colors = {
+            "NASDAQ": "mdl-color--blue-700",
+            "NYSE": "mdl-color--cyan-500",
+            "Market Data Express": "mdl-color--light-green-300",
+            "BATS\ Trading\ Inc": "mdl-color--teal-400"
+        };
+
+        // Convert the exchange name into a valid class name
+        var exch_class = exchange_name in exchange_colors ? exchange_colors[exchange_name] : 'mdl-color--blue-grey-300';
+
+        return React.createElement(MdlCard, { headerClass: exch_class,
+            mainHeader: this.props.symbol,
+            subHeader: this.props.exchange,
+            text: this.props.name,
+            linkUrl: '#',
+            linkText: 'View more details' });
     }
 });
 
@@ -19012,24 +19026,38 @@ var SearchContainer = React.createClass({
 
     getInitialState: function getInitialState() {
         return {
-            results: []
+            results: [],
+            searchValue: null
         };
     },
-    componentDidMount: debounce(function () {
-        // TODO: use vanilla js instead of jQuery
-        $.get(this.props.source, (function (result) {
-            if (this.isMounted()) {
-                this.setState({
-                    results: result
-                });
-            }
-        }).bind(this)).fail(function (error) {
-            console.log(error);
+    componentDidMount: function componentDidMount() {
+        this.setState({
+            searchValue: this.props.searchValue
         });
-    }, 500),
+        if (this.props.searchValue != '') {
+            // TODO: use vanilla js instead of jQuery
+            $.get(this.props.source, (function (result) {
+                if (this.isMounted()) {
+                    this.setState({
+                        results: result
+                    });
+                }
+            }).bind(this)).fail(function (error) {
+                console.log(error);
+            });
+        }
+    },
     render: function render() {
         var result_items = this.state.results;
         var array_elements = [];
+
+        if (!this.state['searchValue']) {
+            return React.createElement(
+                'div',
+                { className: 'finance-container mdl-cell mdl-shadow--2dp mdl-color--white mdl-cell--12-col' },
+                'Enter the company name to search for.'
+            );
+        }
         for (var key = 0; key < result_items.length; key++) {
             var element = result_items[key];
             array_elements.push(React.createElement(SearchResult, { source: this.props.source, symbol: element.Symbol, name: element.Name, exchange: element.Exchange, key: key }));
@@ -19046,13 +19074,14 @@ var SearchContainer = React.createClass({
 document.addEventListener('DOMContentLoaded', function () {
     var search_box = document.getElementsByName('search')[0];
     var attach_node = document.getElementById('search-results');
-    search_box.addEventListener('keypress', function () {
+
+    ReactDOM.render(React.createElement(SearchContainer, { source: '#', searchValue: search_box.value }), attach_node);
+
+    search_box.addEventListener('keydown', debounce(function () {
+        var source = "http://127.0.0.1:8000/api/lookup/" + search_box.value;
         ReactDOM.unmountComponentAtNode(attach_node);
-        if (this.value) {
-            var source = "http://127.0.0.1:8000/api/lookup/" + this.value;
-            ReactDOM.render(React.createElement(SearchContainer, { source: source }), attach_node);
-        }
-    });
+        ReactDOM.render(React.createElement(SearchContainer, { source: source, searchValue: this.value }), attach_node);
+    }, 400));
 });
 
 /** Returns a function, that, as long as it continues to be invoked, will not
