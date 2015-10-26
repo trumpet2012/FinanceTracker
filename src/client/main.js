@@ -74,6 +74,9 @@ var SearchContainer = React.createClass({
         });
         if (this.props.searchValue != '') {
             // TODO: use vanilla js instead of jQuery
+            // TODO: Fix search strings with spaces
+            // TODO: Show gif while loading
+            // TODO: Show message when there are no results
             $.get(this.props.source, function (result) {
                 if (this.isMounted()) {
                     this.setState({
