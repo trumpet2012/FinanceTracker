@@ -19011,12 +19011,12 @@ var SearchResult = React.createClass({
 
         // Convert the exchange name into a valid class name
         var exch_class = exchange_name in exchange_colors ? exchange_colors[exchange_name] : 'mdl-color--blue-grey-300';
-
+        var detail_url = "http://127.0.0.1:8000/company/detail/" + this.props.symbol + "/";
         return React.createElement(MdlCard, { headerClass: exch_class,
             mainHeader: this.props.symbol,
             subHeader: this.props.exchange,
             text: this.props.name,
-            linkUrl: '#',
+            linkUrl: detail_url,
             linkText: 'View more details' });
     }
 });

@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block topbar_title %}
+    {{ company.Name }}
+{% endblock topbar_title %}
+
+{% block content %}
+    <div class="mdl-grid">
+        <div class="mdl-cell--3-col mdl-shadow--2dp mdl-color--white info">
+            <div class="info-item">
+                <span class="info-item__label">Change: </span><span class="info-item__value">{{ company.Change|floatformat:"-2" }}</span>
+            </div>
+            <div class="info-item">
+                <span class="info-item__label">Change Percentage: </span><span class="info-item__value">{{ company.ChangePercent|floatformat:"-2" }}</span>
+            </div>
+            <div class="info-item">
+                <span class="info-item__label">High: </span><span class="info-item__value">{{ company.High }}</span>
+            </div>
+            <div class="info-item">
+                <span class="info-item__label">Low: </span><span class="info-item__value">{{ company.Low }}</span>
+            </div>
+            <div class="info-item">
+                <span class="info-item__label">Last Price: </span><span class="info-item__value">{{ company.LastPrice }}</span>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+{% block footer_scripts %}
+    <script src='{% static 'client/bundle.js' %}'></script>
+    <style>
+        .info {
+            padding: 16px 32px;
+        }
+        .info-item {
+            padding: 16px 32px;
+            border-bottom: 1px solid ghostwhite;
+        }
+        .info-item__label {
+            font-size: 1.25em;
+            color: #6a6a6a;
+            padding-right: 10px;
+        }
+        .info-item__value {
+            font-size: 1.1em;
+        }
+    </style>
+{% endblock footer_scripts %}
