@@ -19080,6 +19080,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
     ReactDOM.render(React.createElement(SearchContainer, { source: '#', searchValue: search_box.value }), attach_node);
 
+    if (search_box.value != "") {
+        var source = "http://127.0.0.1:8000/api/lookup/" + search_box.value;
+        ReactDOM.unmountComponentAtNode(attach_node);
+        ReactDOM.render(React.createElement(SearchContainer, { source: source, searchValue: search_box.value }), attach_node);
+    }
+
     search_box.addEventListener('keydown', debounce(function () {
         var source = "http://127.0.0.1:8000/api/lookup/" + search_box.value;
         ReactDOM.unmountComponentAtNode(attach_node);
