@@ -10,10 +10,6 @@ class IndexView(TemplateView):
     template_name = 'index.html'
 
 
-class CompanySearchView(TemplateView):
-    template_name = 'company_search.html'
-
-
 def company_detail(request, company_ticker):
     context = {}
     from datetime import timedelta, datetime

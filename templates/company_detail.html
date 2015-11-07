@@ -8,7 +8,7 @@
 
 {% block content %}
     <div class="mdl-grid">
-        <div class="mdl-cell--3-col mdl-shadow--2dp mdl-color--white info">
+        <div class="mdl-cell--3-col mdl-shadow--2dp mdl-color--white paper">
             <header class="info-header">
                 Current Information
                 <div class="updated">{{ company.MSDate|naturaltime }}</div>
@@ -29,7 +29,7 @@
                 <span class="info-item__label">Change Percentage: </span><span class="info-item__value">{{ company.ChangePercent|floatformat:"-2"|intcomma }}</span>
             </div>
         </div>
-        <div class="mdl-cell--7-col mdl-shadow--2dp mdl-color--white info">
+        <div class="mdl-cell--7-col mdl-shadow--2dp mdl-color--white paper">
             <header class="info-header">
                 Summary Information
             </header>
@@ -46,17 +46,17 @@
                 <span class="info-item__label">Change Percentage (Year to Date): </span><span class="info-item__value">{{ company.ChangePercentYTD|floatformat:"-2"|intcomma }}%</span>
             </div>
         </div>
-        <div class="mdl-cell--5-col mdl-shadow--2dp mdl-color--white info graph">
+        <div class="mdl-cell--5-col mdl-shadow--2dp mdl-color--white paper graph">
             <div class="close-price-graph-container">
 
             </div>
         </div>
-        <div class="mdl-cell--5-col mdl-shadow--2dp mdl-color--white info graph">
+        <div class="mdl-cell--5-col mdl-shadow--2dp mdl-color--white paper graph">
             <div class="volume-graph-container">
 
             </div>
         </div>
-        <div class="mdl-cell--12-col mdl-shadow--2dp mdl-color--white info graph">
+        <div class="mdl-cell--12-col mdl-shadow--2dp mdl-color--white paper graph">
             <div class="detailed-graph-container">
 
             </div>
@@ -65,10 +65,6 @@
 {% endblock content %}
 {% block footer_scripts %}
     <style>
-        .info {
-            padding: 16px 32px;
-            margin: 8px;
-        }
         .info-header {
             font-size: 1.9em;
             padding-bottom: 8px;

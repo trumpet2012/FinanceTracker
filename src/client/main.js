@@ -4,12 +4,12 @@ var cx = require('classnames');
 
 
 var MdlCard = React.createClass({
-    render: function(){
+    render: function () {
         var header_class = this.props.headerClass;
         // Dictionary of classes that will be added to the title div of the card
         var header_class_dict = {
             'result-item': true,
-            'result-item__symbol':true,
+            'result-item__symbol': true,
             'mdl-card__title': true,
             'mdl-card--expanded': true
         };
@@ -17,27 +17,28 @@ var MdlCard = React.createClass({
         var header_classes = cx(header_class_dict);
 
         return (
-        <div className="result-item-card mdl-card mdl-shadow--2dp">
-            <div className={header_classes}>
-                <h4 className="mdl-card__title-text">{this.props.mainHeader}</h4>
-                <div className="result-item__exchange">{this.props.subHeader}</div>
-            </div>
-            <div className="mdl-card__supporting-text">
-                <div className="result-item result-item__name">
-                    {this.props.text}
+            <div className="result-item-card mdl-card mdl-shadow--2dp">
+                <div className={header_classes}>
+                    <h4 className="mdl-card__title-text">{this.props.mainHeader}</h4>
+                    <div className="result-item__exchange">{this.props.subHeader}</div>
+                </div>
+                <div className="mdl-card__supporting-text">
+                    <div className="result-item result-item__name">
+                        {this.props.text}
+                    </div>
+                </div>
+                <div className=" mdl-card__actions mdl-card--border">
+                    <a href={this.props.linkUrl}
+                       className="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">{this.props.linkText}</a>
                 </div>
             </div>
-            <div className=" mdl-card__actions mdl-card--border">
-                <a href={this.props.linkUrl} className="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">{this.props.linkText}</a>
-            </div>
-        </div>
         );
     }
 });
 
 
 var SearchResult = React.createClass({
-    render: function(){
+    render: function () {
         var exchange_name = this.props.exchange;
         var exchange_colors = {
             "NASDAQ": "mdl-color--blue-700",
@@ -62,16 +63,12 @@ var SearchResult = React.createClass({
 
 
 var SearchContainer = React.createClass({
-    getInitialState: function(){
+    getInitialState: function () {
         return {
-            results: [],
-            searchValue: null
+            results: []
         }
     },
-    componentDidMount: function(){
-        this.setState({
-            searchValue: this.props.searchValue
-        });
+    componentDidMount: function () {
         if (this.props.searchValue != '') {
             // TODO: use vanilla js instead of jQuery
             // TODO: Fix search strings with spaces
@@ -88,58 +85,71 @@ var SearchContainer = React.createClass({
             });
         }
     },
-    render: function() {
-        var result_items  = this.state.results;
+    render: function () {
+        var result_items = this.state.results;
         var array_elements = [];
 
-        if(!this.state['searchValue']){
-            return (
-              <div className='finance-container mdl-cell mdl-shadow--2dp mdl-color--white mdl-cell--12-col'>Enter the company name to search for.</div>
-            );
-        }
-        for (var key=0; key<result_items.length; key++){
+        for (var key = 0; key < result_items.length; key++) {
             var element = result_items[key];
-            array_elements.push(<SearchResult source={this.props.source} symbol={element.Symbol} name={element.Name} exchange={element.Exchange} key={key}/>);
+            array_elements.push(<SearchResult source={this.props.source} symbol={element.Symbol} name={element.Name}
+                                              exchange={element.Exchange} key={key}/>);
         }
         return (
-        <div className="search-results-container">
-            {array_elements}
-            {this.props.children}
-        </div>
-    );
-  }
+            <div className="search-results-container">
+                {array_elements}
+                {this.props.children}
+            </div>
+        );
+    }
+});
+
+var SearchHelpText = React.createClass({
+    render: function () {
+        return (
+            <div className="mdl-cell mdl-cell--12-col mdl-color--white mdl-shadow--2dp paper search-help-text">
+                Find stock information for any company. Begin by searching for the company name or ticker.
+            </div>
+        );
+    }
 });
 
 
-function createSearchComponents(){
-    var search_box = document.getElementsByName('search')[0];
+function createSearchComponents() {
+    var search_box = document.getElementById('search');
     var attach_node = document.getElementById('search-results');
-    ReactDOM.render(
-            <SearchContainer source="#" searchValue={search_box.value}/>,
-            attach_node
-    );
 
-
-    if (search_box.value != ""){
+    if (search_box.value != "") {
         var source = "http://127.0.0.1:8000/api/lookup/" + search_box.value;
         ReactDOM.unmountComponentAtNode(attach_node);
         ReactDOM.render(
             <SearchContainer source={source} searchValue={search_box.value}/>,
             attach_node
         );
-    }
-    search_box.addEventListener('keydown', debounce(function(){
-        var source = "http://127.0.0.1:8000/api/lookup/" + search_box.value;
-        ReactDOM.unmountComponentAtNode(attach_node);
+    } else {
         ReactDOM.render(
-            <SearchContainer source={source} searchValue={this.value}/>,
+            <SearchHelpText/>,
             attach_node
         );
+    }
+    search_box.addEventListener('keydown', debounce(function () {
+        var source = "http://127.0.0.1:8000/api/lookup/" + search_box.value;
+        ReactDOM.unmountComponentAtNode(attach_node);
+        if (search_box.value != "") {
+            ReactDOM.render(
+                <SearchContainer source={source} searchValue={this.value}/>,
+                attach_node
+            );
+        } else {
+            ReactDOM.render(
+                <SearchHelpText/>,
+                attach_node
+            );
+        }
     }, 400));
 
 }
 
-document.addEventListener('DOMContentLoaded', function(){
+document.addEventListener('DOMContentLoaded', function () {
     createSearchComponents();
 });
 

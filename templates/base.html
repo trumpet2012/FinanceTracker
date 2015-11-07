@@ -23,6 +23,7 @@
             <div class="mdl-layout__header-row">
                 <h5>{% block topbar_title %}Home{% endblock topbar_title %}</h5>
                 <div class="mdl-layout-spacer"></div>
+                {% block topbar_search %}
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable
                       mdl-textfield--floating-label mdl-textfield--align-right">
                     <label class="mdl-button mdl-js-button mdl-button--icon"
@@ -35,6 +36,7 @@
                                id="fixed-header-drawer-exp"/>
                     </div>
                 </div>
+                {% endblock topbar_search %}
             </div>
         </header>
         <div class="mdl-layout__drawer">
@@ -42,7 +44,6 @@
             <nav class="mdl-navigation">
                 {% block sidebar_links %}
                     <a class="mdl-navigation__link" href="{% url 'index' %}">Home</a>
-                    <a class="mdl-navigation__link" href="{% url 'company_search' %}">Find Company</a>
                 {% endblock sidebar_links %}
             </nav>
         </div>

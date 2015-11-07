@@ -1,26 +1,123 @@
 .page-header--1 {
     font-size: 2em;
 }
+
 .search-results-container {
     display: flex;
     flex-wrap: wrap;
 }
+
 .result-item-card {
     margin: 16px 32px;
     min-height: 170px;
 }
+
 .mdl-card__title {
     color: white;
 }
+
 .mdl-card__title-text {
     width: 100%;
 }
+
 .result-item__exchange {
     display: block;
     clear: both;
     color: #efefef;
     font-size: .8em;
 }
+
 .finance-container {
     padding: 16px 32px;
+}
+
+.paper {
+    padding: 16px 32px;
+    margin: 8px;
+}
+
+.search-box {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.search-container {
+    height: 70px;
+    vertical-align: middle;
+    white-space: nowrap;
+    position: relative;
+}
+
+.search-container input#search {
+    height: inherit;
+    border: none;
+    font-size: 2em;
+    float: left;
+    color: #848382;
+    padding-left: 85px;
+    border-color: #ccc;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+
+    letter-spacing: 3px;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-weight: 500;
+
+    -webkit-transition: background .55s ease;
+    -moz-transition: background .55s ease;
+    -ms-transition: background .55s ease;
+    -o-transition: background .55s ease;
+    transition: background .55s ease;
+}
+
+.search-container input#search::-webkit-input-placeholder {
+    color: #C6C6C6;
+    letter-spacing: 5px;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-weight: 500;
+}
+
+.search-container input#search:-moz-placeholder { /* Firefox 18- */
+    color: #C6C6C6;
+    letter-spacing: 5px;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-weight: 500;
+}
+
+.search-container input#search::-moz-placeholder { /* Firefox 19+ */
+    color: #C6C6C6;
+    letter-spacing: 5px;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-weight: 500;
+}
+
+.search-container input#search:-ms-input-placeholder {
+    color: #C6C6C6;
+    letter-spacing: 5px;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-weight: 500;
+}
+
+.search-container .search-icon {
+    position: absolute;
+    top: 20%;
+    margin-left: 32px;
+    z-index: 1;
+    color: #9a9a9a;
+    font-size: 3em;
+}
+
+.search-container input#search:hover, .search-container input#search:focus, .search-container input#search:active {
+    outline: none;
+    background: #ffffff;
+}
+
+.search-box {
+    margin: 8px;
+}
+
+.search-help-text {
+    font-size: 1.2em;
+    color: #4d4d4d;
 }

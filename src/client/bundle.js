@@ -18989,7 +18989,8 @@ var MdlCard = React.createClass({
                 { className: ' mdl-card__actions mdl-card--border' },
                 React.createElement(
                     'a',
-                    { href: this.props.linkUrl, className: 'mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect' },
+                    { href: this.props.linkUrl,
+                        className: 'mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect' },
                     this.props.linkText
                 )
             )
@@ -19026,14 +19027,10 @@ var SearchContainer = React.createClass({
 
     getInitialState: function getInitialState() {
         return {
-            results: [],
-            searchValue: null
+            results: []
         };
     },
     componentDidMount: function componentDidMount() {
-        this.setState({
-            searchValue: this.props.searchValue
-        });
         if (this.props.searchValue != '') {
             // TODO: use vanilla js instead of jQuery
             // TODO: Fix search strings with spaces
@@ -19054,16 +19051,10 @@ var SearchContainer = React.createClass({
         var result_items = this.state.results;
         var array_elements = [];
 
-        if (!this.state['searchValue']) {
-            return React.createElement(
-                'div',
-                { className: 'finance-container mdl-cell mdl-shadow--2dp mdl-color--white mdl-cell--12-col' },
-                'Enter the company name to search for.'
-            );
-        }
         for (var key = 0; key < result_items.length; key++) {
             var element = result_items[key];
-            array_elements.push(React.createElement(SearchResult, { source: this.props.source, symbol: element.Symbol, name: element.Name, exchange: element.Exchange, key: key }));
+            array_elements.push(React.createElement(SearchResult, { source: this.props.source, symbol: element.Symbol, name: element.Name,
+                exchange: element.Exchange, key: key }));
         }
         return React.createElement(
             'div',
@@ -19074,20 +19065,37 @@ var SearchContainer = React.createClass({
     }
 });
 
+var SearchHelpText = React.createClass({
+    displayName: 'SearchHelpText',
+
+    render: function render() {
+        return React.createElement(
+            'div',
+            { className: 'mdl-cell mdl-cell--12-col mdl-color--white mdl-shadow--2dp paper search-help-text' },
+            'Find stock information for any company. Begin by searching for the company name or ticker.'
+        );
+    }
+});
+
 function createSearchComponents() {
-    var search_box = document.getElementsByName('search')[0];
+    var search_box = document.getElementById('search');
     var attach_node = document.getElementById('search-results');
-    ReactDOM.render(React.createElement(SearchContainer, { source: '#', searchValue: search_box.value }), attach_node);
 
     if (search_box.value != "") {
         var source = "http://127.0.0.1:8000/api/lookup/" + search_box.value;
         ReactDOM.unmountComponentAtNode(attach_node);
         ReactDOM.render(React.createElement(SearchContainer, { source: source, searchValue: search_box.value }), attach_node);
+    } else {
+        ReactDOM.render(React.createElement(SearchHelpText, null), attach_node);
     }
     search_box.addEventListener('keydown', debounce(function () {
         var source = "http://127.0.0.1:8000/api/lookup/" + search_box.value;
         ReactDOM.unmountComponentAtNode(attach_node);
-        ReactDOM.render(React.createElement(SearchContainer, { source: source, searchValue: this.value }), attach_node);
+        if (search_box.value != "") {
+            ReactDOM.render(React.createElement(SearchContainer, { source: source, searchValue: this.value }), attach_node);
+        } else {
+            ReactDOM.render(React.createElement(SearchHelpText, null), attach_node);
+        }
     }, 400));
 }
 

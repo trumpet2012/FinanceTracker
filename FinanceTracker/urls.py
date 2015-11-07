@@ -24,6 +24,5 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', views.IndexView.as_view(), name='index'),
     url(r'^api/', include(mod_api_urls)),
-    url(r'^company_search/', views.CompanySearchView.as_view(), name='company_search'),
     url(r'^company/detail/(?P<company_ticker>\w+)', views.company_detail, name='company_detail'),
 ]
