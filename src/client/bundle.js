@@ -19074,10 +19074,9 @@ var SearchContainer = React.createClass({
     }
 });
 
-document.addEventListener('DOMContentLoaded', function () {
+function createSearchComponents() {
     var search_box = document.getElementsByName('search')[0];
     var attach_node = document.getElementById('search-results');
-
     ReactDOM.render(React.createElement(SearchContainer, { source: '#', searchValue: search_box.value }), attach_node);
 
     if (search_box.value != "") {
@@ -19085,12 +19084,15 @@ document.addEventListener('DOMContentLoaded', function () {
         ReactDOM.unmountComponentAtNode(attach_node);
         ReactDOM.render(React.createElement(SearchContainer, { source: source, searchValue: search_box.value }), attach_node);
     }
-
     search_box.addEventListener('keydown', debounce(function () {
         var source = "http://127.0.0.1:8000/api/lookup/" + search_box.value;
         ReactDOM.unmountComponentAtNode(attach_node);
         ReactDOM.render(React.createElement(SearchContainer, { source: source, searchValue: this.value }), attach_node);
     }, 400));
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    createSearchComponents();
 });
 
 /** Returns a function, that, as long as it continues to be invoked, will not

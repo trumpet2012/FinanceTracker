@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.views.generic.base import TemplateView
 from django.shortcuts import render_to_response
 
@@ -14,6 +16,13 @@ class CompanySearchView(TemplateView):
 
 def company_detail(request, company_ticker):
     context = {}
-    context.update({'company': Quote.get_info(ticker_name=company_ticker)})
+    from datetime import timedelta, datetime
+
+    company_json = Quote.get_info(ticker_name=company_ticker)
+
+    ole_date = timedelta(days=company_json.get('MSDate'))
+    start_date = datetime(1899,12,31)
+    company_json.update({'MSDate': start_date + ole_date})
+    context.update({'company': company_json})
 
     return render_to_response('company_detail.html', context=context)

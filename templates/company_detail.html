@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
+{% load humanize %}
 
 {% block topbar_title %}
     {{ company.Name }}
@@ -8,29 +9,69 @@
 {% block content %}
     <div class="mdl-grid">
         <div class="mdl-cell--3-col mdl-shadow--2dp mdl-color--white info">
+            <header class="info-header">
+                Current Information
+                <div class="updated">{{ company.MSDate|naturaltime }}</div>
+            </header>
             <div class="info-item">
-                <span class="info-item__label">Change: </span><span class="info-item__value">{{ company.Change|floatformat:"-2" }}</span>
+                <span class="info-item__label">High: </span><span class="info-item__value">{{ company.High|intcomma }}</span>
             </div>
             <div class="info-item">
-                <span class="info-item__label">Change Percentage: </span><span class="info-item__value">{{ company.ChangePercent|floatformat:"-2" }}</span>
+                <span class="info-item__label">Low: </span><span class="info-item__value">{{ company.Low|intcomma }}</span>
             </div>
             <div class="info-item">
-                <span class="info-item__label">High: </span><span class="info-item__value">{{ company.High }}</span>
+                <span class="info-item__label">Last Price: </span><span class="info-item__value">{{ company.LastPrice|intcomma }}</span>
             </div>
             <div class="info-item">
-                <span class="info-item__label">Low: </span><span class="info-item__value">{{ company.Low }}</span>
+                <span class="info-item__label">Change: </span><span class="info-item__value">{{ company.Change|floatformat:"-2"|intcomma }}</span>
             </div>
             <div class="info-item">
-                <span class="info-item__label">Last Price: </span><span class="info-item__value">{{ company.LastPrice }}</span>
+                <span class="info-item__label">Change Percentage: </span><span class="info-item__value">{{ company.ChangePercent|floatformat:"-2"|intcomma }}</span>
+            </div>
+        </div>
+        <div class="mdl-cell--7-col mdl-shadow--2dp mdl-color--white info">
+            <header class="info-header">
+                Summary Information
+            </header>
+            <div class="info-item">
+                <span class="info-item__label">Market Cap: </span><span class="info-item__value">${{ company.MarketCap|floatformat:"-2"|intcomma }}</span>
+            </div>
+            <div class="info-item">
+                <span class="info-item__label">Volume: </span><span class="info-item__value">{{ company.Volume|floatformat:"-2"|intcomma }}</span>
+            </div>
+            <div class="info-item">
+                <span class="info-item__label">Change (Year to Date): </span><span class="info-item__value">{{ company.ChangeYTD|intcomma }}</span>
+            </div>
+            <div class="info-item">
+                <span class="info-item__label">Change Percentage (Year to Date): </span><span class="info-item__value">{{ company.ChangePercentYTD|floatformat:"-2"|intcomma }}%</span>
+            </div>
+        </div>
+        <div class="mdl-cell--5-col mdl-shadow--2dp mdl-color--white info graph">
+            <div class="close-price-graph-container">
+
+            </div>
+        </div>
+        <div class="mdl-cell--5-col mdl-shadow--2dp mdl-color--white info graph">
+            <div class="volume-graph-container">
+
+            </div>
+        </div>
+        <div class="mdl-cell--12-col mdl-shadow--2dp mdl-color--white info graph">
+            <div class="detailed-graph-container">
+
             </div>
         </div>
     </div>
 {% endblock content %}
 {% block footer_scripts %}
-    <script src='{% static 'client/bundle.js' %}'></script>
     <style>
         .info {
             padding: 16px 32px;
+            margin: 8px;
+        }
+        .info-header {
+            font-size: 1.9em;
+            padding-bottom: 8px;
         }
         .info-item {
             padding: 16px 32px;
@@ -44,5 +85,17 @@
         .info-item__value {
             font-size: 1.1em;
         }
+        .updated {
+            padding-top: 3px;
+            font-size: .6em;
+            color: gainsboro;
+            float: right;
+        }
     </style>
+    <script src="{% static 'js/InteractiveChartApi.js' %}"></script>
+    <script src='{% static 'client/bundle.js' %}'></script>
+    <script type="text/javascript" src="//code.highcharts.com/stock/highstock.js"></script>
+    <script>
+        new Markit.InteractiveChartApi("{{ company.Symbol }}", 3650);
+    </script>
 {% endblock footer_scripts %}
