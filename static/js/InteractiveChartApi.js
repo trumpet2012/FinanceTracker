@@ -3,6 +3,7 @@
  * Version 2.0
  */
 var Markit = {};
+
 /**
  * Define the InteractiveChartApi.
  * First argument is symbol (string) for the quote. Examples: AAPL, MSFT, JNJ, GOOG.
@@ -18,13 +19,10 @@ Markit.InteractiveChartApi.prototype.PlotChart = function(){
     
     var params = {
         parameters: JSON.stringify( this.getInputParams() )
-    }
+    };
 
     //Make JSON request for timeseries data
     $.ajax({
-        beforeSend:function(){
-            $("#chartDemoContainer").text("Loading chart...");
-        },
         data: params,
         url: "http://dev.markitondemand.com/Api/v2/InteractiveChart/jsonp",
         dataType: "jsonp",
@@ -35,6 +33,7 @@ Markit.InteractiveChartApi.prototype.PlotChart = function(){
                 console.error("Error: ", json.Message);
                 return;
             }
+            $(".graph").removeClass('graph--hidden');
             this.render(json);
         },
         error: function(response,txtStatus){

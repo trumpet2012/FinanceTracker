@@ -121,3 +121,14 @@
     font-size: 1.2em;
     color: #4d4d4d;
 }
+
+.home-button {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    height: 32px;
+    width: 32px;
+    overflow: hidden;
+    z-index: 3;
+    display: block;
+}

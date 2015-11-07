@@ -6,62 +6,85 @@
     {{ company.Name }}
 {% endblock topbar_title %}
 
+{% block home-icon %}arrow_back{% endblock home-icon %}
+
+{% block topbar_tabs %}
+    <a href="#summary" class="mdl-layout__tab is-active">Overview</a>
+    <a href="#graphs" class="mdl-layout__tab">Detailed Graphs</a>
+{% endblock topbar_tabs %}
+
 {% block content %}
-    <div class="mdl-grid">
-        <div class="mdl-cell--3-col mdl-shadow--2dp mdl-color--white paper">
-            <header class="info-header">
-                Current Information
-                <div class="updated">{{ company.MSDate|naturaltime }}</div>
-            </header>
-            <div class="info-item">
-                <span class="info-item__label">High: </span><span class="info-item__value">{{ company.High|intcomma }}</span>
+    <section class="mdl-layout__tab-panel is-active" id="summary">
+        <div class="mdl-grid page-content">
+            <div class="mdl-cell--3-col mdl-shadow--2dp mdl-color--white paper">
+                <header class="info-header">
+                    Current Information
+                    <div class="updated">{{ company.MSDate|naturaltime }}</div>
+                </header>
+                <div class="info-item">
+                    <span class="info-item__label">High: </span><span
+                        class="info-item__value">{{ company.High|intcomma }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-item__label">Low: </span><span
+                        class="info-item__value">{{ company.Low|intcomma }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-item__label">Last Price: </span><span
+                        class="info-item__value">{{ company.LastPrice|intcomma }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-item__label">Change: </span><span
+                        class="info-item__value">{{ company.Change|floatformat:"-2"|intcomma }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-item__label">Change Percentage: </span><span
+                        class="info-item__value">{{ company.ChangePercent|floatformat:"-2"|intcomma }}</span>
+                </div>
             </div>
-            <div class="info-item">
-                <span class="info-item__label">Low: </span><span class="info-item__value">{{ company.Low|intcomma }}</span>
-            </div>
-            <div class="info-item">
-                <span class="info-item__label">Last Price: </span><span class="info-item__value">{{ company.LastPrice|intcomma }}</span>
-            </div>
-            <div class="info-item">
-                <span class="info-item__label">Change: </span><span class="info-item__value">{{ company.Change|floatformat:"-2"|intcomma }}</span>
-            </div>
-            <div class="info-item">
-                <span class="info-item__label">Change Percentage: </span><span class="info-item__value">{{ company.ChangePercent|floatformat:"-2"|intcomma }}</span>
+            <div class="mdl-cell--7-col mdl-shadow--2dp mdl-color--white paper">
+                <header class="info-header">
+                    Summary Information
+                </header>
+                <div class="info-item">
+                    <span class="info-item__label">Market Cap: </span><span
+                        class="info-item__value">${{ company.MarketCap|floatformat:"-2"|intcomma }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-item__label">Volume: </span><span
+                        class="info-item__value">{{ company.Volume|floatformat:"-2"|intcomma }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-item__label">Change (Year to Date): </span><span
+                        class="info-item__value">{{ company.ChangeYTD|intcomma }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-item__label">Change Percentage (Year to Date): </span><span
+                        class="info-item__value">{{ company.ChangePercentYTD|floatformat:"-2"|intcomma }}%</span>
+                </div>
             </div>
         </div>
-        <div class="mdl-cell--7-col mdl-shadow--2dp mdl-color--white paper">
-            <header class="info-header">
-                Summary Information
-            </header>
-            <div class="info-item">
-                <span class="info-item__label">Market Cap: </span><span class="info-item__value">${{ company.MarketCap|floatformat:"-2"|intcomma }}</span>
-            </div>
-            <div class="info-item">
-                <span class="info-item__label">Volume: </span><span class="info-item__value">{{ company.Volume|floatformat:"-2"|intcomma }}</span>
-            </div>
-            <div class="info-item">
-                <span class="info-item__label">Change (Year to Date): </span><span class="info-item__value">{{ company.ChangeYTD|intcomma }}</span>
-            </div>
-            <div class="info-item">
-                <span class="info-item__label">Change Percentage (Year to Date): </span><span class="info-item__value">{{ company.ChangePercentYTD|floatformat:"-2"|intcomma }}%</span>
-            </div>
-        </div>
-        <div class="mdl-cell--5-col mdl-shadow--2dp mdl-color--white paper graph">
-            <div class="close-price-graph-container">
+    </section>
 
-            </div>
-        </div>
-        <div class="mdl-cell--5-col mdl-shadow--2dp mdl-color--white paper graph">
-            <div class="volume-graph-container">
+    <section class="mdl-layout__tab-panel" id="graphs">
+        <div class="mdl-grid page-content">
+            <div class="mdl-cell--5-col mdl-shadow--2dp mdl-color--white paper graph graph--hidden">
+                <div class="close-price-graph-container">
 
+                </div>
             </div>
-        </div>
-        <div class="mdl-cell--12-col mdl-shadow--2dp mdl-color--white paper graph">
-            <div class="detailed-graph-container">
+            <div class="mdl-cell--5-col mdl-shadow--2dp mdl-color--white paper graph graph--hidden">
+                <div class="volume-graph-container">
 
+                </div>
+            </div>
+            <div class="mdl-cell--12-col mdl-shadow--2dp mdl-color--white paper graph graph--hidden">
+                <div class="detailed-graph-container">
+
+                </div>
             </div>
         </div>
-    </div>
+    </section>
 {% endblock content %}
 {% block footer_scripts %}
     <style>
@@ -69,23 +92,30 @@
             font-size: 1.9em;
             padding-bottom: 8px;
         }
+
         .info-item {
             padding: 16px 32px;
             border-bottom: 1px solid ghostwhite;
         }
+
         .info-item__label {
             font-size: 1.25em;
             color: #6a6a6a;
             padding-right: 10px;
         }
+
         .info-item__value {
             font-size: 1.1em;
         }
+
         .updated {
             padding-top: 3px;
             font-size: .6em;
             color: gainsboro;
             float: right;
+        }
+        .graph--hidden {
+            visibility: hidden;
         }
     </style>
     <script src="{% static 'js/InteractiveChartApi.js' %}"></script>
